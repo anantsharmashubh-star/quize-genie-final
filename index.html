@@ -960,10 +960,15 @@ function setMode(m){
 async function callAPI(prompt, maxTokens=4000){
   const res = await fetch("https://uhcfulbukiahcudpmick.supabase.co/functions/v1/anthropic-proxy/complete",{
     method:"POST",
-    headers:{"Content-Type":"application/json","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoY2Z1bGJ1a2lhaGN1ZHBtaWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MTk2MjIsImV4cCI6MjA4OTQ5NTYyMn0.NbrZrt6TWWhNPbI5IiKiBJX4dHpVthMt2mCISh0IX7A"},
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoY2Z1bGJ1a2lhaGN1ZHBtaWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MTk2MjIsImV4cCI6MjA4OTQ5NTYyMn0.NbrZrt6TWWhNPbI5IiKiBJX4dHpVthMt2mCISh0IX7A",
+      "apikey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVoY2Z1bGJ1a2lhaGN1ZHBtaWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MTk2MjIsImV4cCI6MjA4OTQ5NTYyMn0.NbrZrt6TWWhNPbI5IiKiBJX4dHpVthMt2mCISh0IX7A"
+    },
     body:JSON.stringify({prompt, max_tokens:maxTokens})
   });
   const data = await res.json();
+  if(data.error) throw new Error(data.error);
   return data.content.map(i=>i.text||"").join("").replace(/```json|```/g,"").trim();
 }
 
